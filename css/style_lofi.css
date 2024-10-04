@@ -13,7 +13,7 @@
     object-fit: cover;
     z-index: -1;
     background-color: black;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.35s ease-in-out;
 }
 
 /* background-menu */
@@ -420,6 +420,9 @@ padding: 0px 19px;
 
 
 
+
+
+
 /* bottom-left corner */
 .bottom-left{
     position: absolute;
@@ -457,23 +460,6 @@ padding: 0px 19px;
     font-weight: 400;
     /* padding-left: 5%; */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -543,5 +529,11 @@ a{
 
 .pointer:hover {
     transform: scale(1.075);
+}
+.video-background video.fade-out {
+    opacity: 0;
+}
+body{
+    background-color: black;
 }
 

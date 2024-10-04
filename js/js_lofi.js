@@ -74,18 +74,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // replace current background with bg in menu // upload new backgrond
   let current_background = document.querySelector('.current_background');
   document.getElementById("bg-videos").addEventListener("click", (event) => {
-    let bg_video_li = event.target.closest("li");
-    let add_bg = bg_menu.querySelector('.add-bg')
-
-    contains_video = bg_video_li.querySelector('video'); 
-    if(contains_video){
-      current_background.src = bg_video_li.querySelector("video").src;
-    }
+      let bg_video_li = event.target.closest("li");
+      let contains_video = bg_video_li.querySelector('video');
+      if (contains_video) {
+          changeBackground(contains_video.src);
+      }
   });
+  
+  document.getElementById('add-bg-button').addEventListener('click', function () {
+      document.getElementById('video-upload').click();
+  });
+  
+  function changeBackground(newVideoSrc) {
+    // Add fade-out class to current video
+    current_background.classList.add('fade-out');
 
-  document.getElementById('add-bg-button').addEventListener('click', function() {
-    document.getElementById('video-upload').click();
-});
+    // Wait for the fade-out transition to complete
+    setTimeout(() => {
+        // Change the video source
+        current_background.setAttribute('src', newVideoSrc);
+
+        // Remove the fade-out class
+        current_background.classList.remove('fade-out');
+    }, 500); // Match this duration with the CSS transition duration
+}
 
 //upload new .mp4 background
 document.getElementById('video-upload').addEventListener('change', function(event) {
@@ -142,18 +154,17 @@ let bg_seek_button_left = document.querySelector('.bg-seek-buttons .seek-button.
 let bg_seek_button_right = document.querySelector('.bg-seek-buttons .seek-button.right');
 let bg_currentIndex = 0;
 
-bg_seek_button_left.addEventListener(('click'), () =>{
+bg_seek_button_left.addEventListener(('click'), () => {
+    let allVideos_li = document.getElementById('bg-videos').querySelectorAll('li');
+    bg_currentIndex = (bg_currentIndex - 1 + (allVideos_li.length - 1)) % (allVideos_li.length - 1); // Move to the next item, loop back to start if at the end, skip add item
+    changeBackground(allVideos_li[bg_currentIndex].querySelector('video').src);
+});
 
-  let allVideos_li = document.getElementById('bg-videos').querySelectorAll('li');
-  bg_currentIndex = (bg_currentIndex - 1 + (allVideos_li.length-1)) % (allVideos_li.length-1); // Move to the next item, loop back to start if at the end, skip add item
-  current_background.src = allVideos_li[bg_currentIndex].querySelector('video').src; // Change the video source to the next item's source
-})
-
-bg_seek_button_right.addEventListener(('click'), () =>{
-  let allVideos_li = document.getElementById('bg-videos').querySelectorAll('li');
-  bg_currentIndex = (bg_currentIndex + 1) % (allVideos_li.length-1); // Move to the next item, loop back to start if at the end
-  current_background.src = allVideos_li[bg_currentIndex].querySelector('video').src; // Change the video source to the next item's source
-})  
+bg_seek_button_right.addEventListener(('click'), () => {
+    let allVideos_li = document.getElementById('bg-videos').querySelectorAll('li');
+    bg_currentIndex = (bg_currentIndex + 1) % (allVideos_li.length - 1); // Move to the next item, loop back to start if at the end
+    changeBackground(allVideos_li[bg_currentIndex].querySelector('video').src);
+});
 
 
 
